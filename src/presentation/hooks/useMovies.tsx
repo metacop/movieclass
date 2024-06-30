@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {type Movie} from '../../core/entities/movie.entity';
 import * as UseCases from '../../core/use-cases';
-import {movieDBFetcher} from '../../config/adapters/moviesDB.adapter';
+import {
+  movieDBFetcher,
+  movieDBFetcherFetch,
+} from '../../config/adapters/moviesDB.adapter';
+
+let porpularPage = 1;
 
 export const useMovies = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,10 +30,14 @@ export const useMovies = () => {
 
     const [nowPlayingMovies, PopularMovies, TopMovies, ComingMovies] =
       await Promise.all([
-        UseCases.moviesNowPlayingsUseCase(movieDBFetcher),
+        //! en el primer ejemplo usamos el adaptador fetch y no axios.
+        UseCases.moviesNowPlayingsUseCase(movieDBFetcherFetch),
+        //! en todos estos casos usamos axios
         UseCases.moviesPopularUseCase(movieDBFetcher),
         UseCases.moviesTopRatedUseCase(movieDBFetcher),
         UseCases.moviesUpComingUseCase(movieDBFetcher),
+
+        // * PODEMOS VER QUE VER EL PATRON ADAPTADOR SE ACOMODA A LA NECESIDAD DE CADA CASO DE USO. SIN NECISIDAD DE CAMBIAR EL CODIGO DE LOS USE-CASES
       ]);
 
     setnowPlaying(nowPlayingMovies);
@@ -44,5 +53,15 @@ export const useMovies = () => {
     popular,
     topRated,
     upComing,
+
+    //Methods
+    PopularNextPage: async () => {
+      porpularPage++;
+      const newPopularMovies = await UseCases.moviesPopularUseCase(
+        movieDBFetcher,
+        {page: porpularPage},
+      );
+      setPopular([...popular, ...newPopularMovies]);
+    },
   };
 };

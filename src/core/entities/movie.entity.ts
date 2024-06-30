@@ -11,3 +11,18 @@ export interface Movie {
   poster: string;
   backdrop: string;
 }
+
+export interface FullMovie extends Movie {
+  genres: string[];
+  duration: number;
+  budget: number;
+  originalTitle: string;
+  productionCompanies: string[];
+}
+
+export interface Actor {
+  id: number;
+  name: string;
+  profile_path: string;
+  character?: string;
+}

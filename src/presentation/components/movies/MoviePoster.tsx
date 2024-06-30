@@ -10,11 +10,7 @@ interface MoviePosterProps {
   width?: number;
 }
 
-export const MoviePoster = ({
-  movie,
-  height = 280,
-  width = 260,
-}: MoviePosterProps) => {
+export const MoviePoster = ({movie, height = 280, width = 260}: MoviePosterProps) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
@@ -52,13 +48,16 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: 'red',
     borderRadius: 18,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.24,
-    shadowRadius: 7,
+    shadowColor: 'red',
+
+    //!Estas propiedades solo funcionan en IOS
+    // shadowOffset: {
+    //   width: 1,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.4,
+    // shadowRadius: 7,
+    // ! esta propiedad funciona para IOS y Android. usar elevation en lugar de las anteriores
     elevation: 9,
   },
 });
